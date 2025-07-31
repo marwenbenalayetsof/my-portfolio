@@ -1,90 +1,156 @@
-<!-- Strengths -->
-<section id="strengths" class="py-16 px-6 bg-white">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Points Forts</h2>
-    <ul class="list-disc list-inside space-y-2 text-lg">
-      <li>Expertise technique en Big Data (Spark, Hadoop, Kafka, Nifi, DBT, Trino)</li>
-      <li>Compétences avancées en gestion de bases de données SGBDR, NoSQL et Data Lakes</li>
-      <li>Expérience sur GCP et Huawei Cloud</li>
-      <li>Langages : Scala, Python, Java, SQL avancé, KSQL, HCL</li>
-      <li>Orchestration avec Airflow, monitoring avec Prometheus, Fluentd, Grafana</li>
-      <li>Maîtrise de Kubernetes, Terraform, CI/CD</li>
-      <li>Esprit DevOps et méthodologie Agile/Scrum</li>
-    </ul>
-  </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marwen Ben Alayet - Data Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .subtitle {
+      font-family: 'Courier New', Courier, monospace;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <!-- Header -->
+  <header class="bg-blue-900 text-white p-6 shadow-md">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+      <div class="flex items-center gap-4">
+        <img src="src/my_image.jpg" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-white shadow-md object-cover" />
+        <div>
+          <h1 class="text-3xl font-bold">Marwen Ben Alayet</h1>
+          <p class="subtitle text-blue-200 text-lg mt-1">✨ Data Engineer</p>
+          <p class="text-sm mt-1 text-blue-300" id="experience-text"></p>
+        </div>
+      </div>
+      <nav class="mt-6 md:mt-0">
+        <a href="#about" class="mx-3 hover:underline">About</a>
+        <a href="#skills" class="mx-3 hover:underline">Skills</a>
+        <a href="#projects" class="mx-3 hover:underline">Projects</a>
+        <a href="#strengths" class="mx-3 hover:underline">Strengths</a>
+        <a href="#experience" class="mx-3 hover:underline">Experience</a>
+        <a href="#education" class="mx-3 hover:underline">Education</a>
+        <a href="#contact" class="mx-3 hover:underline">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- Tech Environment -->
-<section id="tech-env" class="py-16 px-6 bg-gray-50">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Environnements Techniques</h2>
+  <!-- About -->
+  <section id="about" class="max-w-6xl mx-auto py-16 px-6">
+    <h2 class="text-3xl font-bold mb-4 text-blue-800">About Me</h2>
     <p class="text-lg leading-relaxed">
-      GCP, Huawei Cloud, Apache Airflow, Spark, Hadoop, Kafka, Trino, NIFI, DBT, Fluentd, Prometheus, Grafana, ELK, RabbitMQ, Python, Scala, Java, SQL, KSQL, HCL, Cassandra, MongoDB, Elasticsearch, PostgreSQL, SQL Server, S3, Hive, CI/CD, Terraform, Kubernetes, Jira, Confluence, Git.
+      I'm a passionate Data Engineer with <span id="years-experience">X</span>+ years of experience building scalable data platforms and pipelines using tools like Spark, Airflow, Trino, and Kubernetes. I design and implement systems that help companies unlock the value of their data.
     </p>
-  </div>
-</section>
+  </section>
 
-<!-- Experience -->
-<section id="experience" class="py-16 px-6 bg-white">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Expériences Professionnelles</h2>
-
-    <!-- Sofrecom -->
-    <div class="mb-8">
-      <h3 class="text-xl font-semibold">Data Engineer – Sofrecom (Juin 2022 – Aujourd’hui)</h3>
-      <p class="text-gray-700 mt-2">Participation à la conception et implémentation de Data Fabric et Data Publish : pipelines (Batch, Streaming, ETL/ELT), anonymisation, monitoring (Fluentd, OpenSearch), orchestration avec Airflow, déploiement Kubernetes, CI/CD, documentation, gestion des secrets avec Vault.</p>
+  <!-- Skills -->
+  <section id="skills" class="bg-white py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Skills</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+        <span class="bg-blue-100 p-3 rounded shadow">Python</span>
+        <span class="bg-blue-100 p-3 rounded shadow">Spark</span>
+        <span class="bg-blue-100 p-3 rounded shadow">Kafka</span>
+        <span class="bg-blue-100 p-3 rounded shadow">Airflow</span>
+        <span class="bg-blue-100 p-3 rounded shadow">Trino</span>
+        <span class="bg-blue-100 p-3 rounded shadow">Kubernetes</span>
+      </div>
     </div>
+  </section>
 
-    <!-- Enda Tamweel CDI -->
-    <div class="mb-8">
-      <h3 class="text-xl font-semibold">Data Engineer – Enda Tamweel (Mars 2021 – Juin 2022)</h3>
-      <p class="text-gray-700 mt-2">Mise en place d'une plateforme de données (architecture Lambda) avec Spark/Scala/Kafka. Réalisation de traitements batch et streaming, création de datamarts, dashboards Qlik Sense, monitoring avec Prometheus et Grafana.</p>
+  <!-- Projects -->
+  <section id="projects" class="py-16 px-6 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Projects</h2>
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold">Data Fabric Platform</h3>
+          <p class="mt-2 text-gray-700">Designed and deployed a centralized data platform using Trino, Spark, and Kubernetes for real-time and batch processing pipelines.</p>
+        </div>
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition">
+          <h3 class="text-xl font-semibold">Data Publish Service</h3>
+          <p class="mt-2 text-gray-700">Built an anonymized data service with access control and GraphQL API for self-service analytics tools like Power BI and Grafana.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- Enda Tamweel stage PFE -->
-    <div class="mb-8">
-      <h3 class="text-xl font-semibold">Stage Data Engineer – Enda Tamweel (Sept. 2020 – Fév. 2021)</h3>
-      <p class="text-gray-700 mt-2">Conception d'une solution Big Data avec Spark, Kafka, Docker dans un environnement virtualisé, intégration temps réel, dashboards Qlik Sense, supervision avec Prometheus.</p>
+  <!-- Strengths -->
+  <section id="strengths" class="py-16 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Points Forts</h2>
+      <ul class="list-disc list-inside space-y-2 text-lg">
+        <li>Expertise technique en Big Data (Spark, Hadoop, Kafka, Nifi, DBT, Trino)</li>
+        <li>Compétences avancées en gestion de bases de données SGBDR, NoSQL et Data Lakes</li>
+        <li>Expérience sur GCP et Huawei Cloud</li>
+        <li>Langages : Scala, Python, Java, SQL avancé, KSQL, HCL</li>
+        <li>Orchestration avec Airflow, monitoring avec Prometheus, Fluentd, Grafana</li>
+        <li>Maîtrise de Kubernetes, Terraform, CI/CD</li>
+        <li>Esprit DevOps et méthodologie Agile/Scrum</li>
+      </ul>
     </div>
+  </section>
 
-    <!-- Enda Tamweel stage été -->
-    <div class="mb-8">
-      <h3 class="text-xl font-semibold">Stage BI/Big Data – Enda Tamweel (Juin – Août 2019)</h3>
-      <p class="text-gray-700 mt-2">Solution BI complète avec Talend, Cognos, Python, R pour collecte, traitement et visualisation de données.</p>
+  <!-- Experience -->
+  <section id="experience" class="py-16 px-6 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Expériences Professionnelles</h2>
+      <div class="space-y-6 text-lg">
+        <div>
+          <h3 class="font-semibold">Data Engineer – Sofrecom (Juin 2022 – Aujourd’hui)</h3>
+          <p>Data Fabric & Data Publish: orchestration Airflow, anonymisation, Terraform infra, CI/CD, monitoring (Fluentd, OpenSearch), déploiement Kubernetes, etc.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">Data Engineer – Enda Tamweel (Mars 2021 – Juin 2022)</h3>
+          <p>Architecture Lambda, Spark/Scala/Kafka, PostgreSQL, dashboards Qlik Sense, monitoring Grafana & Prometheus.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">Stage Data Engineer – Enda Tamweel (Sept. 2020 – Fév. 2021)</h3>
+          <p>Traitement temps réel avec Kafka, Spark Streaming, Docker, PostgreSQL, visualisation avec Qlik Sense.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold">Stage BI/Big Data – Enda Tamweel (Juin – Août 2019)</h3>
+          <p>Talend, IBM Cognos, Python, R pour la collecte, traitement et visualisation de données BI.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Education -->
-<section id="education" class="py-16 px-6 bg-gray-50">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Formations</h2>
-    <ul class="list-disc list-inside space-y-2 text-lg">
-      <li>2020 – Ingénieur en Informatique, spécialité BI & Big Data – ESPRIT</li>
-      <li>2016 – Cycle Préparatoire Math-Physique – IPEIN</li>
-      <li>2014 – Baccalauréat Mathématiques</li>
-    </ul>
-  </div>
-</section>
+  <!-- Education -->
+  <section id="education" class="py-16 px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Formations</h2>
+      <ul class="list-disc list-inside space-y-2 text-lg">
+        <li>2020 – Ingénieur en Informatique, spécialité BI & Big Data – ESPRIT</li>
+        <li>2016 – Cycle Préparatoire Math-Physique – IPEIN</li>
+        <li>2014 – Baccalauréat Mathématiques</li>
+      </ul>
+    </div>
+  </section>
 
-<!-- Certifications -->
-<section id="certifications" class="py-16 px-6 bg-white">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Certifications</h2>
-    <ul class="list-disc list-inside space-y-2 text-lg">
-      <li>Google Cloud Platform Big Data & Machine Learning Fundamentals</li>
-      <li>Fundamentals of Deep Learning for Computer Vision (NVIDIA)</li>
-      <li>Big Data Essentials: HDFS, MapReduce and Spark RDD (Yandex)</li>
-      <li>CKAD – Certified Kubernetes Application Developer (Udemy)</li>
-      <li>Apache Airflow Fundamentals (Astronomer)</li>
-    </ul>
-  </div>
-</section>
+  <!-- Contact -->
+  <section id="contact" class="py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-6 text-blue-800">Contact</h2>
+      <p class="text-lg">📧 Email: <a href="mailto:marwen.benalayet.sof@gmail.com" class="text-blue-700 underline">marwen.benalayet.sof@gmail.com</a></p>
+      <p class="mt-2 text-lg">💼 LinkedIn: <a href="https://www.linkedin.com/in/marwen-benalayet/" target="_blank" class="text-blue-700 underline">linkedin.com/in/marwen-benalayet</a></p>
+      <p class="mt-2 text-lg">📁 GitHub: <a href="https://github.com/marwenbenalayetsof" target="_blank" class="text-blue-700 underline">github.com/marwenbenalayetsof</a></p>
+    </div>
+  </section>
 
-<!-- Languages -->
-<section id="languages" class="py-16 px-6 bg-gray-50">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold mb-6 text-blue-800">Langues</h2>
-    <p class="text-lg">Français : Courant | Anglais : Courant</p>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white text-center py-4">
+    <p>&copy; 2025 Marwen Ben Alayet - Data Engineer</p>
+  </footer>
+
+  <!-- JS: experience -->
+  <script>
+    const startYear = 2020;
+    const currentYear = new Date().getFullYear();
+    const yearsOfExperience = currentYear - startYear;
+    document.getElementById("years-experience").textContent = yearsOfExperience;
+    document.getElementById("experience-text").textContent = `${yearsOfExperience}+ years of experience`;
+  </script>
+</body>
+</html>
