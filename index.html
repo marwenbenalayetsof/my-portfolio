@@ -3,154 +3,993 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marwen Ben Alayet - Data Engineer</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Marwen Ben Alayet | Senior Data Engineer</title>
+  <meta name="description" content="Senior Data Engineer with 6+ years of experience in Spark, Kafka, Airflow, GCP, and Kubernetes. Building scalable data platforms and pipelines." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    .subtitle {
-      font-family: 'Courier New', Courier, monospace;
-      letter-spacing: 1px;
+    /* ===== CSS RESET & VARIABLES ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-primary: #0a0f1c;
+      --bg-secondary: #111827;
+      --bg-card: #1a2236;
+      --bg-card-hover: #1f2a42;
+      --accent: #00d4aa;
+      --accent-light: #00f0c0;
+      --accent-dim: rgba(0, 212, 170, 0.15);
+      --accent-glow: rgba(0, 212, 170, 0.4);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(255,255,255,0.06);
+      --gradient-accent: linear-gradient(135deg, #00d4aa, #0ea5e9);
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+      --shadow-glow: 0 0 30px rgba(0,212,170,0.15);
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10, 15, 28, 0.85);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .navbar.scrolled { background: rgba(10, 15, 28, 0.95); box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+    .nav-container {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 24px;
+    }
+    .nav-logo {
+      font-size: 1.25rem; font-weight: 800;
+      background: var(--gradient-accent); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;
+      font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;
+      transition: var(--transition); position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .mobile-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #0a0f1c 0%, #0f172a 50%, #0c1929 100%);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('assets/hero-bg.png') center/cover no-repeat;
+      opacity: 0.15;
+    }
+    .hero-particles {
+      position: absolute; inset: 0; z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 900px; padding: 0 24px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-dim); border: 1px solid rgba(0,212,170,0.3);
+      padding: 8px 20px; border-radius: 50px;
+      font-size: 0.85rem; font-weight: 600; color: var(--accent);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900; line-height: 1.1; margin-bottom: 16px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    .hero-title .gradient-text {
+      background: var(--gradient-accent); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--text-secondary); font-weight: 300;
+      margin-bottom: 12px;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    .hero-location {
+      color: var(--text-muted); font-size: 1rem;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease-out 0.5s both;
+    }
+    .hero-cta {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: 12px;
+      font-size: 0.95rem; font-weight: 600; text-decoration: none;
+      transition: var(--transition); cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--gradient-accent); color: #0a0f1c;
+      box-shadow: 0 4px 20px rgba(0,212,170,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,170,0.4); }
+    .btn-outline {
+      background: transparent; color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 48px; margin-top: 64px;
+      animation: fadeInUp 0.8s ease-out 0.8s both;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-value {
+      font-size: 2.5rem; font-weight: 800;
+      background: var(--gradient-accent); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+    /* ===== SECTIONS ===== */
+    .section {
+      padding: 100px 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .section-header {
+      text-align: center; margin-bottom: 64px;
+    }
+    .section-label {
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+      line-height: 1.2;
+    }
+    .section-divider {
+      width: 60px; height: 3px;
+      background: var(--gradient-accent);
+      margin: 20px auto 0; border-radius: 2px;
+    }
+    /* ===== ABOUT ===== */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    .about-image-wrapper {
+      position: relative;
+    }
+    .about-image {
+      width: 100%; max-width: 380px; aspect-ratio: 1;
+      border-radius: 24px; object-fit: cover;
+      border: 3px solid rgba(0,212,170,0.2);
+      box-shadow: var(--shadow-glow);
+    }
+    .about-image-decoration {
+      position: absolute; top: -12px; right: -12px;
+      width: 100%; height: 100%; border-radius: 24px;
+      border: 2px solid rgba(0,212,170,0.15);
+      z-index: -1;
+    }
+    .about-text p { color: var(--text-secondary); margin-bottom: 20px; font-size: 1.05rem; }
+    .about-highlights {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;
+    }
+    .about-highlight {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--text-secondary); font-size: 0.9rem;
+    }
+    .about-highlight-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent-dim); display: flex;
+      align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.85rem; flex-shrink: 0;
+    }
+    /* ===== SKILLS ===== */
+    .skills-container { display: flex; flex-direction: column; gap: 32px; }
+    .skill-category {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      transition: var(--transition);
+    }
+    .skill-category:hover { border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-glow); }
+    .skill-category-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .skill-category-title .icon { color: var(--accent); }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill-tag {
+      padding: 8px 18px; border-radius: 10px;
+      background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.15);
+      color: var(--accent-light); font-size: 0.85rem; font-weight: 500;
+      transition: var(--transition); cursor: default;
+    }
+    .skill-tag:hover {
+      background: rgba(0,212,170,0.15); border-color: rgba(0,212,170,0.3);
+      transform: translateY(-2px);
+    }
+    /* ===== EXPERIENCE ===== */
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative; margin-bottom: 48px;
+      opacity: 0; transform: translateX(-20px);
+      transition: all 0.6s ease-out;
+    }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .timeline-dot {
+      position: absolute; left: -33px; top: 6px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--bg-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .timeline-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      transition: var(--transition);
+    }
+    .timeline-card:hover { border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+    .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; }
+    .timeline-role { font-size: 1.2rem; font-weight: 700; }
+    .timeline-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; color: var(--accent);
+      background: var(--accent-dim); padding: 4px 12px;
+      border-radius: 6px; white-space: nowrap;
+    }
+    .timeline-company { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; }
+    .timeline-details { list-style: none; }
+    .timeline-details li {
+      position: relative; padding-left: 20px; margin-bottom: 10px;
+      color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6;
+    }
+    .timeline-details li::before {
+      content: ''; position: absolute; left: 0; top: 10px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); opacity: 0.6;
+    }
+    /* ===== PROJECTS ===== */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      transition: var(--transition); position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; background: var(--gradient-accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: var(--transition);
+    }
+    .project-card:hover { border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-glow); transform: translateY(-4px); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: var(--accent-dim); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 20px;
+    }
+    .project-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .project-desc { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 20px; line-height: 1.7; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .project-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; padding: 4px 10px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text-muted);
+    }
+    /* ===== CERTIFICATIONS ===== */
+    .certs-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+    }
+    .cert-card {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px;
+      transition: var(--transition);
+    }
+    .cert-card:hover { border-color: rgba(0,212,170,0.2); transform: translateY(-2px); }
+    .cert-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--accent-dim); display: flex;
+      align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1.1rem; flex-shrink: 0;
+    }
+    .cert-name { font-weight: 600; font-size: 0.9rem; }
+    .cert-issuer { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+    /* ===== EDUCATION ===== */
+    .edu-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+    .edu-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px;
+      transition: var(--transition);
+    }
+    .edu-card:hover { border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-glow); }
+    .edu-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem; color: var(--accent);
+      background: var(--accent-dim); padding: 4px 12px;
+      border-radius: 6px; display: inline-block; margin-bottom: 12px;
+    }
+    .edu-degree { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
+    .edu-school { color: var(--text-muted); font-size: 0.9rem; }
+    /* ===== LANGUAGES ===== */
+    .lang-grid { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .lang-item { text-align: center; }
+    .lang-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--bg-card); border: 2px solid rgba(0,212,170,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px; font-weight: 700; font-size: 1rem;
+      transition: var(--transition);
+    }
+    .lang-item:hover .lang-circle { border-color: var(--accent); box-shadow: var(--shadow-glow); transform: scale(1.05); }
+    .lang-name { font-weight: 600; font-size: 0.9rem; }
+    .lang-level { color: var(--text-muted); font-size: 0.8rem; }
+    /* ===== CONTACT ===== */
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;
+    }
+    .contact-card {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px 28px;
+      text-decoration: none; color: var(--text-primary);
+      transition: var(--transition);
+    }
+    .contact-card:hover { border-color: rgba(0,212,170,0.2); box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+    .contact-icon {
+      width: 50px; height: 50px; border-radius: 12px;
+      background: var(--accent-dim); display: flex;
+      align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1.2rem; flex-shrink: 0;
+    }
+    .contact-label { font-size: 0.8rem; color: var(--text-muted); }
+    .contact-value { font-weight: 600; font-size: 0.95rem; margin-top: 2px; }
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px; text-align: center;
+    }
+    .footer-text { color: var(--text-muted); font-size: 0.85rem; }
+    .footer-text a { color: var(--accent); text-decoration: none; }
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .fade-in {
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.7s ease-out;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.active {
+        display: flex; flex-direction: column; position: absolute;
+        top: 100%; left: 0; right: 0; background: rgba(10,15,28,0.98);
+        padding: 24px; gap: 20px; border-bottom: 1px solid var(--border);
+      }
+      .mobile-toggle { display: block; }
+      .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .about-image-wrapper { justify-self: center; }
+      .about-highlights { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .hero-stat-value { font-size: 2rem; }
+      .timeline { padding-left: 30px; }
+      .timeline::before { left: 10px; }
+      .timeline-dot { left: -28px; }
+      .projects-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-  <!-- Header -->
-  <header class="bg-blue-900 text-white p-6 shadow-md">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-      <div class="flex items-center gap-4">
-        <img src="src/my_image.jpg" alt="Avatar" class="w-20 h-20 rounded-full border-4 border-white shadow-md object-cover" />
-        <div>
-          <h1 class="text-3xl font-bold">Marwen Ben Alayet</h1>
-          <p class="subtitle text-blue-200 text-lg mt-1">✨ Data Engineer</p>
-          <p class="text-sm mt-1 text-blue-300" id="experience-text"></p>
-        </div>
-      </div>
-      <nav class="mt-6 md:mt-0">
-        <a href="#about" class="mx-3 hover:underline">About</a>
-        <a href="#skills" class="mx-3 hover:underline">Skills</a>
-        <a href="#projects" class="mx-3 hover:underline">Projects</a>
-        <a href="#strengths" class="mx-3 hover:underline">Strengths</a>
-        <a href="#experience" class="mx-3 hover:underline">Experience</a>
-        <a href="#education" class="mx-3 hover:underline">Education</a>
-        <a href="#contact" class="mx-3 hover:underline">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- About -->
-  <section id="about" class="max-w-6xl mx-auto py-16 px-6">
-    <h2 class="text-3xl font-bold mb-4 text-blue-800">About Me</h2>
-    <p class="text-lg leading-relaxed">
-      I am a dedicated and results-driven Data Engineer with <span id="years-experience">X</span>+ years of experience building scalable data platforms and pipelines. My expertise spans across tools like Spark, Airflow, Trino, and Kubernetes. I design and deploy robust systems that enable organizations to unlock insights and leverage the full potential of their data assets.
-    </p>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills" class="bg-white py-16 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Skills</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-        <span class="bg-blue-100 p-3 rounded shadow">Python</span>
-        <span class="bg-blue-100 p-3 rounded shadow">Spark</span>
-        <span class="bg-blue-100 p-3 rounded shadow">Kafka</span>
-        <span class="bg-blue-100 p-3 rounded shadow">Airflow</span>
-        <span class="bg-blue-100 p-3 rounded shadow">Trino</span>
-        <span class="bg-blue-100 p-3 rounded shadow">Kubernetes</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="py-16 px-6 bg-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Projects</h2>
-      <div class="space-y-6">
-        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition">
-          <h3 class="text-xl font-semibold">Data Fabric Platform</h3>
-          <p class="mt-2 text-gray-700">Developed and implemented a centralized data platform leveraging Trino, Spark, and Kubernetes to enable both real-time and batch data processing.</p>
-        </div>
-        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition">
-          <h3 class="text-xl font-semibold">Data Publish Service</h3>
-          <p class="mt-2 text-gray-700">Built a secure data publishing service featuring access control and anonymization modules, supporting self-service analytics through a GraphQL API.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Strengths -->
-  <section id="strengths" class="py-16 px-6 bg-white">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Core Strengths</h2>
-      <ul class="list-disc list-inside space-y-2 text-lg">
-        <li>Strong technical expertise in Big Data technologies: Spark, Hadoop, Kafka, Nifi, DBT, Trino</li>
-        <li>Advanced skills in relational and NoSQL databases, data lakes, and large-scale data management</li>
-        <li>Cloud experience with Google Cloud Platform and Huawei Cloud</li>
-        <li>Proficiency in Python, Scala, Java, SQL, KSQL, and HCL</li>
-        <li>Workflow orchestration with Airflow and monitoring with Prometheus, Fluentd, and Grafana</li>
-        <li>Infrastructure automation using Kubernetes and Terraform</li>
-        <li>Strong understanding of Agile/Scrum methodology and DevOps best practices</li>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">&lt;MB /&gt;</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certifications</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">&#9776;</button>
     </div>
-  </section>
+  </nav>
 
-  <!-- Experience -->
-  <section id="experience" class="py-16 px-6 bg-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Professional Experience</h2>
-      <div class="space-y-6 text-lg">
-        <div>
-          <h3 class="font-semibold">Data Engineer – Sofrecom (June 2022 – Present)</h3>
-          <p>Led the implementation of the Data Fabric and Data Publish platforms, integrating Airflow orchestration, Terraform-managed infrastructure, secure data anonymization, and monitoring via Fluentd and OpenSearch. Ensured seamless deployment in Kubernetes with CI/CD pipelines.</p>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <canvas class="hero-particles" id="particles"></canvas>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Open to Opportunities
+      </div>
+      <h1 class="hero-title">
+        Marwen<br><span class="gradient-text">Ben Alayet</span>
+      </h1>
+      <p class="hero-subtitle">Senior Data Engineer</p>
+      <p class="hero-location">Riyadh, Saudi Arabia &bull; Tunis, Tunisia</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Get In Touch &#8594;</a>
+        <a href="#experience" class="btn btn-outline">View Experience</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="6">0</div>
+          <div class="hero-stat-label">Years Experience</div>
         </div>
-        <div>
-          <h3 class="font-semibold">Data Engineer – Enda Tamweel (March 2021 – June 2022)</h3>
-          <p>Designed and deployed a Lambda architecture for real-time and batch processing using Spark, Scala, and Kafka. Delivered BI dashboards with Qlik Sense and monitored infrastructure using Grafana and Prometheus.</p>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="3">0</div>
+          <div class="hero-stat-label">Companies</div>
         </div>
-        <div>
-          <h3 class="font-semibold">Data Engineer Intern – Enda Tamweel (Sept. 2020 – Feb. 2021)</h3>
-          <p>Implemented a flexible Big Data platform using Kafka, Spark Streaming, and Docker in a DevOps environment. Managed real-time data integration, storage in PostgreSQL, and visualization with Qlik Sense.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold">BI/Big Data Intern – Enda Tamweel (June – August 2019)</h3>
-          <p>Built end-to-end BI and Big Data solutions using Talend, IBM Cognos, Python, and R for data collection, transformation, and dashboard reporting.</p>
+        <div class="hero-stat">
+          <div class="hero-stat-value" data-count="5">0</div>
+          <div class="hero-stat-label">Certifications</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Education -->
-  <section id="education" class="py-16 px-6 bg-white">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Education</h2>
-      <ul class="list-disc list-inside space-y-2 text-lg">
-        <li>2020 – Engineer in Computer Science, BI & Big Data specialization – ESPRIT</li>
-        <li>2016 – Preparatory Cycle in Math & Physics – IPEIN</li>
-        <li>2014 – Mathematics Baccalaureate</li>
-      </ul>
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="section-header fade-in">
+      <div class="section-label">// About Me</div>
+      <h2 class="section-title">Who I Am</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-image-wrapper fade-in">
+        <img src="src/my_image.jpg" alt="Marwen Ben Alayet" class="about-image" />
+        <div class="about-image-decoration"></div>
+      </div>
+      <div class="about-text fade-in">
+        <p>Results-driven Senior Data Engineer with 6+ years of progressive experience designing, building, and optimizing large-scale data infrastructures across regulated industries including financial services, banking, and telecommunications.</p>
+        <p>Deep expertise in distributed computing frameworks, cloud-native platforms, and modern data orchestration tools. Proven track record of delivering end-to-end data pipelines, enforcing governance standards, and translating complex business requirements into resilient, scalable data solutions.</p>
+        <div class="about-highlights">
+          <div class="about-highlight">
+            <div class="about-highlight-icon">&#9729;</div>
+            <span>Cloud-Native Platforms</span>
+          </div>
+          <div class="about-highlight">
+            <div class="about-highlight-icon">&#9889;</div>
+            <span>Real-Time Streaming</span>
+          </div>
+          <div class="about-highlight">
+            <div class="about-highlight-icon">&#9878;</div>
+            <span>Data Governance</span>
+          </div>
+          <div class="about-highlight">
+            <div class="about-highlight-icon">&#9881;</div>
+            <span>DevOps & CI/CD</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section id="contact" class="py-16 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-6 text-blue-800">Contact</h2>
-      <p class="text-lg">📧 Email: <a href="mailto:marwen.benalayet.sof@gmail.com" class="text-blue-700 underline">marwen.benalayet.sof@gmail.com</a></p>
-      <p class="mt-2 text-lg">💼 LinkedIn: <a href="https://www.linkedin.com/in/marwen-benalayet/" target="_blank" class="text-blue-700 underline">linkedin.com/in/marwen-benalayet</a></p>
-      <p class="mt-2 text-lg">📁 GitHub: <a href="https://github.com/marwenbenalayetsof" target="_blank" class="text-blue-700 underline">github.com/marwenbenalayetsof</a></p>
+  <!-- Skills Section -->
+  <section class="section" id="skills" style="background: var(--bg-secondary); max-width: 100%; padding-left: calc((100% - 1200px)/2 + 24px); padding-right: calc((100% - 1200px)/2 + 24px);">
+    <div class="section-header fade-in">
+      <div class="section-label">// Technical Skills</div>
+      <h2 class="section-title">Tech Stack</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="skills-container" style="max-width: 1200px; margin: 0 auto;">
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#9729;</span> Cloud &amp; Infrastructure</div>
+        <div class="skill-tags">
+          <span class="skill-tag">GCP</span><span class="skill-tag">Huawei Cloud</span>
+          <span class="skill-tag">OCI</span><span class="skill-tag">OpenShift</span>
+          <span class="skill-tag">IBM Cloud</span><span class="skill-tag">Kubernetes</span>
+          <span class="skill-tag">Docker</span><span class="skill-tag">Terraform</span>
+        </div>
+      </div>
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#9889;</span> Big Data &amp; Streaming</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Apache Spark</span><span class="skill-tag">Apache Kafka</span>
+          <span class="skill-tag">Hadoop</span><span class="skill-tag">Apache NiFi</span>
+          <span class="skill-tag">Trino</span><span class="skill-tag">DBT</span>
+          <span class="skill-tag">Debezium</span><span class="skill-tag">Spark Streaming</span>
+        </div>
+      </div>
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#128187;</span> Programming Languages</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span><span class="skill-tag">Scala</span>
+          <span class="skill-tag">Java</span><span class="skill-tag">SQL</span>
+          <span class="skill-tag">PySpark</span>
+        </div>
+      </div>
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#128451;</span> Databases</div>
+        <div class="skill-tags">
+          <span class="skill-tag">PostgreSQL</span><span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Oracle</span><span class="skill-tag">SQL Server</span>
+          <span class="skill-tag">Cassandra</span><span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">Elasticsearch</span><span class="skill-tag">OpenSearch</span>
+        </div>
+      </div>
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#9878;</span> Data Governance &amp; Orchestration</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Airflow</span><span class="skill-tag">Talend</span>
+          <span class="skill-tag">Informatica</span><span class="skill-tag">Data Anonymization</span>
+          <span class="skill-tag">Metadata Management</span><span class="skill-tag">CDC</span>
+          <span class="skill-tag">Schema Validation</span>
+        </div>
+      </div>
+      <div class="skill-category fade-in">
+        <div class="skill-category-title"><span class="icon">&#128200;</span> Monitoring &amp; DevOps</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span>
+          <span class="skill-tag">Fluentd</span><span class="skill-tag">ELK Stack</span>
+          <span class="skill-tag">RabbitMQ</span><span class="skill-tag">CI/CD</span>
+          <span class="skill-tag">Git</span><span class="skill-tag">Agile SCRUM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="section" id="experience">
+    <div class="section-header fade-in">
+      <div class="section-label">// Professional Experience</div>
+      <h2 class="section-title">Career Journey</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-role">Senior Data Engineer</h3>
+            <span class="timeline-date">Sep 2025 - Present</span>
+          </div>
+          <p class="timeline-company">Datalake &bull; Riyadh, Saudi Arabia</p>
+          <ul class="timeline-details">
+            <li>Architect and optimize scalable data infrastructures leveraging Python, SQL, Kafka, Informatica, GCP, and Kubernetes to support enterprise-grade financial analytics.</li>
+            <li>Define and enforce robust data models, schemas, and metadata standards to ensure consistency and discoverability across the data ecosystem.</li>
+            <li>Design and implement reliable, high-throughput data flows that underpin sophisticated analytics and business intelligence capabilities.</li>
+            <li>Build, test, and maintain high-quality CDC data connectors; enforce strong data governance practices and conduct rigorous validation to preserve data integrity.</li>
+            <li>Provide strategic technical guidance on the selection and implementation of modern data engineering tools and architectural patterns.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-role">Data Engineer</h3>
+            <span class="timeline-date">Jun 2022 - Aug 2025</span>
+          </div>
+          <p class="timeline-company">Orange &bull; Tunis, Tunisia</p>
+          <ul class="timeline-details">
+            <li>Architected Data Fabric: a unified platform automating extraction, transformation, and storage across complex multi-source data workflows for Orange Wholesale.</li>
+            <li>Built Data Publish: a secure solution for distributing data to internal platforms and public cloud environments, incorporating a sensitivity-aware anonymization module.</li>
+            <li>Developed Streaming, Batch, ELT, and ETL pipelines using PySpark and Trino, ensuring high throughput and fault tolerance.</li>
+            <li>Orchestrated end-to-end data workflows and task dependencies with Apache Airflow.</li>
+            <li>Managed cloud services across GCP and Huawei Cloud: S3, Storage Buckets, PostgreSQL, Kafka, and OpenSearch.</li>
+            <li>Deployed containerized solutions on Kubernetes; integrated RabbitMQ for reliable asynchronous messaging.</li>
+            <li>Delivered CI/CD workflows with Terraform for infrastructure-as-code and continuous deployment.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-role">Data Engineer</h3>
+            <span class="timeline-date">Mar 2021 - Jun 2022</span>
+          </div>
+          <p class="timeline-company">Enda Tamweel &bull; Tunis, Tunisia</p>
+          <ul class="timeline-details">
+            <li>Built a production-grade data platform for a leading microfinance institution, enabling real-time and batch analytics using Lambda architecture.</li>
+            <li>Designed physical and logical data architecture aligned with banking business requirements.</li>
+            <li>Ingested streaming data via Kafka brokers and processed it with Spark Streaming (Scala).</li>
+            <li>Built Dockerised data marts serving reporting and decision-making workloads.</li>
+            <li>Implemented infrastructure monitoring with Prometheus and Grafana, achieving proactive incident detection.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <h3 class="timeline-role">Data Engineering Intern</h3>
+            <span class="timeline-date">Sep 2020 - Feb 2021</span>
+          </div>
+          <p class="timeline-company">Enda Tamweel &bull; Tunis, Tunisia</p>
+          <ul class="timeline-details">
+            <li>Developed a Big Data solution leveraging containerization and virtualization for efficient data integration, processing, and real-time analysis.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section" id="projects" style="background: var(--bg-secondary); max-width: 100%; padding-left: calc((100% - 1200px)/2 + 24px); padding-right: calc((100% - 1200px)/2 + 24px);">
+    <div class="section-header fade-in">
+      <div class="section-label">// Key Projects</div>
+      <h2 class="section-title">What I've Built</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="projects-grid" style="max-width: 1200px; margin: 0 auto;">
+      <div class="project-card fade-in">
+        <div class="project-icon">&#127760;</div>
+        <h3 class="project-title">Data Fabric Platform</h3>
+        <p class="project-desc">Unified platform automating extraction, transformation, and storage across complex multi-source data workflows. Supports both real-time streaming and batch processing with fault-tolerant architecture for Orange Wholesale.</p>
+        <div class="project-tags">
+          <span class="project-tag">PySpark</span><span class="project-tag">Trino</span>
+          <span class="project-tag">Kubernetes</span><span class="project-tag">Airflow</span>
+          <span class="project-tag">GCP</span>
+        </div>
+      </div>
+      <div class="project-card fade-in">
+        <div class="project-icon">&#128274;</div>
+        <h3 class="project-title">Data Publish Service</h3>
+        <p class="project-desc">Secure data publishing service featuring access control and sensitivity-aware anonymization modules. Distributes data to internal platforms and public cloud environments with self-service analytics capability.</p>
+        <div class="project-tags">
+          <span class="project-tag">Kafka</span><span class="project-tag">Debezium</span>
+          <span class="project-tag">Anonymization</span><span class="project-tag">Huawei Cloud</span>
+        </div>
+      </div>
+      <div class="project-card fade-in">
+        <div class="project-icon">&#9889;</div>
+        <h3 class="project-title">Lambda Architecture Platform</h3>
+        <p class="project-desc">Production-grade data platform for microfinance enabling real-time and batch analytics. Implemented Lambda architecture with Kafka, Spark Streaming, and Dockerised data marts for reporting workloads.</p>
+        <div class="project-tags">
+          <span class="project-tag">Kafka</span><span class="project-tag">Spark Streaming</span>
+          <span class="project-tag">Scala</span><span class="project-tag">Docker</span>
+          <span class="project-tag">Prometheus</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications Section -->
+  <section class="section" id="certifications">
+    <div class="section-header fade-in">
+      <div class="section-label">// Certifications</div>
+      <h2 class="section-title">Credentials</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card fade-in">
+        <div class="cert-icon">&#127942;</div>
+        <div>
+          <div class="cert-name">Databricks Lakeflow Spark Declarative Pipelines</div>
+          <div class="cert-issuer">Databricks</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-icon">&#127942;</div>
+        <div>
+          <div class="cert-name">Certified Kubernetes Application Developer</div>
+          <div class="cert-issuer">CNCF</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-icon">&#127942;</div>
+        <div>
+          <div class="cert-name">Apache Airflow Fundamentals</div>
+          <div class="cert-issuer">Apache</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-icon">&#127942;</div>
+        <div>
+          <div class="cert-name">GCP Big Data &amp; Machine Learning Fundamentals</div>
+          <div class="cert-issuer">Google Cloud</div>
+        </div>
+      </div>
+      <div class="cert-card fade-in">
+        <div class="cert-icon">&#127942;</div>
+        <div>
+          <div class="cert-name">Big Data Essentials: HDFS, MapReduce &amp; Spark RDD</div>
+          <div class="cert-issuer">Coursera</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section class="section" id="education" style="background: var(--bg-secondary); max-width: 100%; padding-left: calc((100% - 1200px)/2 + 24px); padding-right: calc((100% - 1200px)/2 + 24px);">
+    <div class="section-header fade-in">
+      <div class="section-label">// Education</div>
+      <h2 class="section-title">Academic Background</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="edu-cards" style="max-width: 1200px; margin: 0 auto;">
+      <div class="edu-card fade-in">
+        <span class="edu-year">2020</span>
+        <h3 class="edu-degree">M.Eng. Computer Science</h3>
+        <p class="edu-school">Business Intelligence &amp; Big Data &mdash; ESPRIT, Tunis, Tunisia</p>
+      </div>
+      <div class="edu-card fade-in">
+        <span class="edu-year">2016</span>
+        <h3 class="edu-degree">Preparatory Studies</h3>
+        <p class="edu-school">Mathematics &amp; Physics &mdash; IPEIN, Tunis, Tunisia</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Languages Section -->
+  <section class="section" id="languages">
+    <div class="section-header fade-in">
+      <div class="section-label">// Languages</div>
+      <h2 class="section-title">Multilingual</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="lang-grid fade-in">
+      <div class="lang-item">
+        <div class="lang-circle">C1</div>
+        <div class="lang-name">French</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-circle">C1</div>
+        <div class="lang-name">English</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-item">
+        <div class="lang-circle">N</div>
+        <div class="lang-name">Arabic</div>
+        <div class="lang-level">Native</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact" style="background: var(--bg-secondary); max-width: 100%; padding-left: calc((100% - 1200px)/2 + 24px); padding-right: calc((100% - 1200px)/2 + 24px);">
+    <div class="section-header fade-in">
+      <div class="section-label">// Get In Touch</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="contact-grid" style="max-width: 1200px; margin: 0 auto;">
+      <a href="mailto:marwen.benalayet.sof@gmail.com" class="contact-card fade-in">
+        <div class="contact-icon">&#9993;</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">marwen.benalayet.sof@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/marwen-benalayet/" target="_blank" rel="noopener" class="contact-card fade-in">
+        <div class="contact-icon">in</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">marwen-benalayet</div>
+        </div>
+      </a>
+      <a href="https://github.com/marwenbenalayetsof" target="_blank" rel="noopener" class="contact-card fade-in">
+        <div class="contact-icon">&#128187;</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">marwenbenalayetsof</div>
+        </div>
+      </a>
+      <a href="tel:+21625315460" class="contact-card fade-in">
+        <div class="contact-icon">&#128222;</div>
+        <div>
+          <div class="contact-label">Phone</div>
+          <div class="contact-value">+216 25 315 460</div>
+        </div>
+      </a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-blue-900 text-white text-center py-4">
-    <p>&copy; 2025 Marwen Ben Alayet - Data Engineer</p>
+  <footer class="footer">
+    <p class="footer-text">&copy; 2026 Marwen Ben Alayet &bull; Senior Data Engineer &bull; Built with passion</p>
   </footer>
 
-  <!-- JS: experience -->
+  <!-- JavaScript -->
   <script>
-    const startYear = 2020;
-    const currentYear = new Date().getFullYear();
-    const yearsOfExperience = currentYear - startYear;
-    document.getElementById("years-experience").textContent = yearsOfExperience;
-    document.getElementById("experience-text").textContent = `${yearsOfExperience}+ years of experience`;
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('active'));
+    });
+
+    // Animated counter
+    const counters = document.querySelectorAll('.hero-stat-value');
+    const animateCounter = (el) => {
+      const target = parseInt(el.dataset.count);
+      const duration = 2000;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased) + '+';
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    // Intersection Observer for animations
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Animate counters when hero stats come into view
+          if (entry.target.classList.contains('hero-stat-value')) {
+            animateCounter(entry.target);
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.fade-in, .timeline-item').forEach(el => observer.observe(el));
+
+    // Start counters on load
+    setTimeout(() => {
+      counters.forEach(c => animateCounter(c));
+    }, 1000);
+
+    // Particle animation
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+          this.reset();
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 212, 170, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    // Create particles
+    for (let i = 0; i < 80; i++) {
+      particles.push(new Particle());
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 212, 170, ${0.06 * (1 - dist / 150)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      connectParticles();
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Smooth typing effect for subtitle
+    const subtitle = document.querySelector('.hero-subtitle');
+    const text = subtitle.textContent;
+    subtitle.textContent = '';
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        subtitle.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 60);
+      }
+    }
+    setTimeout(typeWriter, 1200);
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 100;
+      sections.forEach(section => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        const id = section.getAttribute('id');
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (link) {
+          if (scrollPos >= top && scrollPos < top + height) {
+            link.style.color = 'var(--accent)';
+          } else {
+            link.style.color = '';
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
